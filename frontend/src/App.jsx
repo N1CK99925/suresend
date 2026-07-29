@@ -22,6 +22,11 @@ export default function App() {
     localStorage.setItem("suresend_active_address", addr);
   }
 
+  function handleDisconnected() {
+    setAddress("");
+    // localStorage key is cleared by disconnectWallet() in stellar.js
+  }
+
   return (
     <div className="min-h-screen flex flex-col">
       {DEMO_MODE && (
@@ -37,7 +42,7 @@ export default function App() {
             <p className="font-display font-bold text-xl tracking-tight">SureSend</p>
             <p className="text-xs text-ledger-mute -mt-0.5">Remittances with a destination</p>
           </div>
-          <ConnectWallet address={address} onConnected={handleConnected} />
+          <ConnectWallet address={address} onConnected={handleConnected} onDisconnected={handleDisconnected} />
         </div>
         <nav className="mx-auto max-w-5xl px-4 sm:px-6 flex gap-1 overflow-x-auto">
           {TABS.map((t) => (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getLocksFor, attestDelivery, claimLock } from "../lib/stellar.js";
 import { track, EVENTS } from "../lib/analytics.js";
-import { Spinner, EmptyState, StatusPill } from "./ui/Primitives.jsx";
+import { Spinner, EmptyState, StatusPill, ErrorBanner } from "./ui/Primitives.jsx";
 import merchants from "../data/merchants.json";
 
 export default function MerchantDashboard({ address }) {
@@ -9,13 +9,20 @@ export default function MerchantDashboard({ address }) {
   const [loading, setLoading] = useState(true);
   const [busyId, setBusyId] = useState(null);
 
+  const [error, setError] = useState("");
+
   const merchantProfile = merchants.find((m) => m.address === address);
 
   async function refresh() {
     setLoading(true);
-    const rows = await getLocksFor(address, "merchant");
-    setLocks(rows);
-    setLoading(false);
+    try {
+      const rows = await getLocksFor(address, "merchant");
+      setLocks(rows);
+    } catch (err) {
+      console.error("Failed to load merchant locks:", err);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -34,18 +41,30 @@ export default function MerchantDashboard({ address }) {
 
   async function handleAttest(id) {
     setBusyId(id);
-    await attestDelivery(id);
-    track(EVENTS.DELIVERY_ATTESTED, { lockId: id });
-    await refresh();
-    setBusyId(null);
+    setError("");
+    try {
+      await attestDelivery(id);
+      track(EVENTS.DELIVERY_ATTESTED, { lockId: id });
+      await refresh();
+    } catch (err) {
+      setError(err?.message || "Failed to confirm delivery. Please try again.");
+    } finally {
+      setBusyId(null);
+    }
   }
 
   async function handleClaim(id) {
     setBusyId(id);
-    await claimLock(id);
-    track(EVENTS.LOCK_CLAIMED, { lockId: id });
-    await refresh();
-    setBusyId(null);
+    setError("");
+    try {
+      await claimLock(id);
+      track(EVENTS.LOCK_CLAIMED, { lockId: id });
+      await refresh();
+    } catch (err) {
+      setError(err?.message || "Failed to claim settlement. Please try again.");
+    } finally {
+      setBusyId(null);
+    }
   }
 
   return (
@@ -60,21 +79,27 @@ export default function MerchantDashboard({ address }) {
         </p>
       </div>
 
+      {error && (
+        <div className="mb-4">
+          <ErrorBanner message={error} />
+        </div>
+      )}
+
       {loading ? (
         <Spinner label="Loading incoming locks…" />
       ) : locks.length === 0 ? (
         <EmptyState title="No locks routed here yet" body="Locks created by senders for this merchant will appear here." />
       ) : (
         <ul className="grid gap-3">
-          {locks.map((l) => (
-            <li key={l.id} className="rounded-stamp border border-ledger-line bg-white p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          {locks.map((l, i) => (
+            <li key={l.id ?? `lock-${i}`} className="rounded-stamp border border-ledger-line bg-white p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
               <div>
                 <div className="flex items-center gap-2">
                   <span className="font-display font-semibold capitalize">{l.category}</span>
                   <StatusPill status={l.status} />
                 </div>
                 <p className="text-sm text-ledger-mute mt-1">
-                  {l.amount} USDC · from {l.sender.slice(0, 6)}…{l.sender.slice(-4)}
+                  {l.amount} SUSD · from {l.sender.slice(0, 6)}…{l.sender.slice(-4)}
                 </p>
               </div>
               <div className="flex gap-2">

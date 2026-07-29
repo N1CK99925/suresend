@@ -87,11 +87,11 @@ npm run dev
 
 The app ships with `VITE_DEMO_MODE=true` by default: the full sender →
 merchant → claim flow runs against `localStorage`, no wallet or deployed
-contract required, so the product can be clicked through, screenshotted,
-and demoed before the on-chain pieces are wired up. Flip
-`VITE_DEMO_MODE=false` and set `VITE_SURESEND_CONTRACT_ID` once you've
-deployed — see `docs/DEPLOYMENT.md` for what's left to implement on the
-live-mode path (it's clearly marked in `frontend/src/lib/stellar.js`).
+contract required. Set `VITE_DEMO_MODE=false` to switch to live mode
+against the deployed testnet contract — the full end-to-end flow (create
+lock → attest delivery → claim settlement) has been tested live on
+Stellar testnet. See `docs/DEPLOYMENT.md` for the environment variable
+reference.
 
 ## Contract address
 

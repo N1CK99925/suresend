@@ -13,3 +13,4 @@ frontend/.env
 .vscode/
 .idea/
 *.log
+contracts/target/

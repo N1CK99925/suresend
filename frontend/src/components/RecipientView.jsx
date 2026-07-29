@@ -37,16 +37,16 @@ export default function RecipientView({ address }) {
         <EmptyState title="Nothing earmarked yet" body="Locks a sender creates with you as the fallback recipient will show up here." />
       ) : (
         <ul className="grid gap-3 sm:grid-cols-2">
-          {locks.map((l) => {
+          {locks.map((l, i) => {
             const merchant = merchants.find((m) => m.address === l.merchant);
             return (
-              <li key={l.id} className="tear-edge rounded-stamp border border-ledger-line bg-white p-4">
+              <li key={l.id ?? `lock-${i}`} className="tear-edge rounded-stamp border border-ledger-line bg-white p-4">
                 <div className="flex items-center justify-between">
                   <span className="font-display font-semibold capitalize">{l.category}</span>
                   <StatusPill status={l.status} />
                 </div>
                 <p className="text-sm mt-2">
-                  <span className="font-medium">{l.amount} USDC</span> — redeemable at{" "}
+                  <span className="font-medium">{l.amount} SUSD</span> — redeemable at{" "}
                   <span className="font-medium">{merchant?.name || "an approved merchant"}</span>
                 </p>
                 {l.status === "Claimed" && (

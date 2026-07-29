@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from "react";
 import merchants from "../data/merchants.json";
-import { createLock, getLocksFor } from "../lib/stellar.js";
+import {
+  createLock,
+  getLocksFor,
+  trustSUSD,
+  approveSUSD,
+} from "../lib/stellar.js";
 import { track, EVENTS } from "../lib/analytics.js";
 import { Spinner, ErrorBanner, EmptyState, StatusPill } from "./ui/Primitives.jsx";
 
@@ -44,7 +49,38 @@ export default function SenderFlow({ address }) {
     setTimeoutDays(30);
     setOnTimeout("RefundToSender");
   }
+  async function handleTrustSUSD() {
+  setSubmitting(true);
+  setError("");
 
+  try {
+    await trustSUSD(address);
+    alert("SUSD enabled successfully! You can now receive and use SUSD.");
+  } catch (err) {
+    setError(
+      err?.message ||
+        "Couldn't enable SUSD for this wallet."
+    );
+  } finally {
+    setSubmitting(false);
+  }
+}
+async function handleApproveSUSD() {
+  setSubmitting(true);
+  setError("");
+
+  try {
+    await approveSUSD(address);
+    alert("SUSD approved successfully!");
+  } catch (err) {
+    setError(
+      err?.message ||
+        "Couldn't approve SUSD for SureSend."
+    );
+  } finally {
+    setSubmitting(false);
+  }
+}
   async function handleSubmit() {
     setSubmitting(true);
     setError("");
@@ -153,7 +189,7 @@ export default function SenderFlow({ address }) {
           <StepCard title="Amount and recipient" onBack={() => setStep(1)}>
             <div className="grid gap-4 max-w-sm">
               <label className="text-sm font-medium">
-                Amount (USDC)
+                Amount (SUSD)
                 <input
                   type="number"
                   min="1"
@@ -226,13 +262,27 @@ export default function SenderFlow({ address }) {
 
         {step === 4 && (
           <StepCard title="Review and sign" onBack={() => setStep(3)}>
+          <button
+  onClick={handleTrustSUSD}
+  disabled={submitting}
+  className="mb-5 rounded-stamp border border-seal-brass text-seal-brassDark px-4 py-2 text-sm font-medium disabled:opacity-50"
+>
+  {submitting ? "Enabling SUSD…" : "Enable SUSD for this wallet"}
+</button>
+<button
+  onClick={handleApproveSUSD}
+  disabled={submitting}
+  className="mb-5 ml-2 rounded-stamp border border-seal-brass text-seal-brassDark px-4 py-2 text-sm font-medium disabled:opacity-50"
+>
+  {submitting ? "Approving…" : "Approve SUSD for SureSend"}
+</button>
             <dl className="grid grid-cols-[120px_1fr] gap-y-2 text-sm max-w-md">
               <dt className="text-ledger-mute">Category</dt>
               <dd className="font-medium capitalize">{category}</dd>
               <dt className="text-ledger-mute">Merchant</dt>
               <dd className="font-medium">{merchant?.name}</dd>
               <dt className="text-ledger-mute">Amount</dt>
-              <dd className="font-medium">{amount} USDC</dd>
+              <dd className="font-medium">{amount} SUSD</dd>
               <dt className="text-ledger-mute">Fallback</dt>
               <dd className="font-medium">
                 {onTimeout === "RefundToSender" ? "Refund to me" : "Release to recipient"} after {timeoutDays} days
@@ -243,7 +293,7 @@ export default function SenderFlow({ address }) {
               disabled={submitting}
               className="mt-6 rounded-stamp bg-seal-brass text-white px-5 py-2.5 text-sm font-semibold hover:bg-seal-brassDark transition-colors disabled:opacity-60"
             >
-              {submitting ? "Signing & locking…" : `Lock ${amount || 0} USDC to ${merchant?.name || "merchant"}`}
+              {submitting ? "Signing & locking…" : `Lock ${amount || 0} SUSD to ${merchant?.name || "merchant"}`}
             </button>
           </StepCard>
         )}
@@ -262,13 +312,13 @@ export default function SenderFlow({ address }) {
             {locks
               .slice()
               .reverse()
-              .map((l) => (
-                <li key={l.id} className="tear-edge rounded-stamp border border-ledger-line bg-white p-3">
+              .map((l, i) => (
+                <li key={l.id ?? `lock-${i}`} className="tear-edge rounded-stamp border border-ledger-line bg-white p-3">
                   <div className="flex items-center justify-between">
                     <span className="font-display font-semibold text-sm capitalize">{l.category}</span>
                     <StatusPill status={l.status} />
                   </div>
-                  <p className="text-xs text-ledger-mute mt-1">{l.amount} USDC</p>
+                  <p className="text-xs text-ledger-mute mt-1">{l.amount} SUSD</p>
                   {l.receiptHash && (
                     <p className="text-[11px] text-ledger-mute mt-1 font-mono truncate">receipt: {l.receiptHash}</p>
                   )}
