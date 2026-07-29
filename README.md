@@ -97,7 +97,7 @@ live-mode path (it's clearly marked in `frontend/src/lib/stellar.js`).
 
 | Network | Contract ID |
 |---|---|
-| Testnet | `<fill in after running scripts/deploy_contract.sh>` |
+| Testnet | `CDZP6FOHKYJEK6GCGMDBE5XJMDYLYODTTT7SH74LA3222NUHU27WJLYE` |
 
 ## Screenshots
 
