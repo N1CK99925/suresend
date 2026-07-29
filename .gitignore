@@ -1,0 +1,15 @@
+# Rust / Soroban
+/target
+**/*.rs.bk
+Cargo.lock
+
+# Node / frontend
+frontend/node_modules
+frontend/dist
+frontend/.env
+
+# Editors / OS
+.DS_Store
+.vscode/
+.idea/
+*.log
