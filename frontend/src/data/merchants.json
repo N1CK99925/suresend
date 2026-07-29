@@ -1,0 +1,26 @@
+[
+  {
+    "id": "gharana-school",
+    "name": "Gharana Public School",
+    "category": "school",
+    "location": "Lahore, Pakistan",
+    "address": "GDEMOSCHOOL0000000000000000000000000000000000000",
+    "note": "Pilot partner — accepts termly fee payments."
+  },
+  {
+    "id": "alshifa-pharmacy",
+    "name": "Al-Shifa Pharmacy",
+    "category": "medicine",
+    "location": "Karachi, Pakistan",
+    "address": "GDEMOPHARMACY000000000000000000000000000000000",
+    "note": "Redeems for prescriptions and medical supplies."
+  },
+  {
+    "id": "kesco-utility",
+    "name": "KESCO Electricity Board",
+    "category": "utility",
+    "location": "Karachi, Pakistan",
+    "address": "GDEMOUTILITY0000000000000000000000000000000000",
+    "note": "Redeems against a household electricity account number."
+  }
+]
