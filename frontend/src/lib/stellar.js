@@ -845,11 +845,15 @@ export async function submitFeedback(entry) {
 
   // Live mode: POST to Netlify function which stores to the repo via GitHub API.
   try {
-    await fetch('/.netlify/functions/submit-feedback', {
+    const res = await fetch('/.netlify/functions/submit-feedback', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(entry),
     });
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`submit-feedback failed: ${res.status} ${text}`);
+    }
   } catch (err) {
     console.error('submitFeedback failed, falling back to local storage', err);
     const all = JSON.parse(localStorage.getItem(FEEDBACK_KEY) || "[]");
@@ -865,7 +869,10 @@ export async function getAllFeedback() {
 
   try {
     const res = await fetch('/.netlify/functions/get-feedback');
-    if (!res.ok) throw new Error('Could not fetch feedback');
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`get-feedback failed: ${res.status} ${text}`);
+    }
     const data = await res.json();
     return data;
   } catch (err) {
