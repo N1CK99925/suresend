@@ -81,23 +81,27 @@ export default function App() {
 function PilotStats() {
   const [feedback, setFeedback] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
+
+  async function loadFeedback() {
+    setLoading(true);
+    setLoadError(null);
+    try {
+      const data = await getAllFeedback();
+      setFeedback(data || []);
+    } catch (err) {
+      setFeedback([]);
+      setLoadError(err?.message || "Could not load pilot feedback");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
     let mounted = true;
-    setLoading(true);
-    getAllFeedback()
-      .then((data) => {
-        if (!mounted) return;
-        setFeedback(data || []);
-      })
-      .catch(() => {
-        if (!mounted) return;
-        setFeedback([]);
-      })
-      .finally(() => {
-        if (!mounted) return;
-        setLoading(false);
-      });
+    loadFeedback().then(() => {
+      if (!mounted) return;
+    });
     return () => {
       mounted = false;
     };
@@ -111,7 +115,7 @@ function PilotStats() {
       <p className="text-sm text-ledger-mute mb-6">
         Aggregated from the in-app feedback widget. Export this alongside your submission's user feedback summary.
       </p>
-      <div className="mb-4">
+      <div className="mb-4 flex flex-wrap gap-2 items-center">
         <button
           onClick={() => {
             const data = JSON.stringify(feedback, null, 2);
@@ -138,7 +142,20 @@ function PilotStats() {
         >
           Copy to clipboard
         </button>
+        <button
+          onClick={loadFeedback}
+          className="rounded-stamp border border-ledger-line bg-white px-3 py-2 text-sm"
+          disabled={loading}
+        >
+          {loading ? "Refreshing…" : "Refresh feedback"}
+        </button>
       </div>
+      {loadError ? (
+        <div className="rounded-stamp border border-route-red bg-route-red/10 px-4 py-3 text-sm text-route-red mb-4">
+          Could not load aggregated feedback: {loadError}.
+          If this is a deployed site, make sure your Netlify functions are configured with <code>GITHUB_TOKEN</code> and <code>GITHUB_REPO</code>.
+        </div>
+      ) : null}
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
         <Stat label="Responses" value={feedback.length} />
         <Stat label="Avg. clarity rating" value={avg} />

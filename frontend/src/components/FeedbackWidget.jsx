@@ -11,17 +11,31 @@ export default function FeedbackWidget({ address }) {
   const [comment, setComment] = useState("");
   const [sent, setSent] = useState(false);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    submitFeedback({ address, role, rating, comment });
-    track(EVENTS.FEEDBACK_SUBMITTED, { role, rating });
-    setSent(true);
-    setTimeout(() => {
-      setOpen(false);
-      setSent(false);
-      setRating(0);
-      setComment("");
-    }, 1400);
+    try {
+      await submitFeedback({ address, role, rating, comment });
+      track(EVENTS.FEEDBACK_SUBMITTED, { role, rating });
+      setSent(true);
+      setTimeout(() => {
+        setOpen(false);
+        setSent(false);
+        setRating(0);
+        setComment("");
+      }, 1400);
+    } catch (err) {
+      console.error("Feedback submission error", err);
+      alert(
+        "Feedback was saved locally, but there was a server issue. Check the Netlify function configuration."
+      );
+      setSent(true);
+      setTimeout(() => {
+        setOpen(false);
+        setSent(false);
+        setRating(0);
+        setComment("");
+      }, 1400);
+    }
   }
 
   if (!open) {

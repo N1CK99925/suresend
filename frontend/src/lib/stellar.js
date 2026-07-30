@@ -867,18 +867,15 @@ export async function getAllFeedback() {
     return JSON.parse(localStorage.getItem(FEEDBACK_KEY) || "[]");
   }
 
-  try {
-    const res = await fetch('/.netlify/functions/get-feedback');
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`get-feedback failed: ${res.status} ${text}`);
-    }
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error('getAllFeedback failed, falling back to local storage', err);
-    return JSON.parse(localStorage.getItem(FEEDBACK_KEY) || "[]");
+  const res = await fetch('/.netlify/functions/get-feedback');
+  if (!res.ok) {
+    const text = await res.text();
+    const err = new Error(`get-feedback failed: ${res.status} ${text}`);
+    console.error('getAllFeedback failed', err);
+    throw err;
   }
+  const data = await res.json();
+  return data;
 }
 
 // Re-export SDK for debugging/scripts.
