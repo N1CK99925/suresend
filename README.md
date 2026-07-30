@@ -14,6 +14,14 @@ of the idea, one category deep (school fees, with medicine/utilities
 scaffolded the same way), built to be piloted with one real sending
 community and one real school.
 
+## Live Deployment
+
+Production MVP: https://suresend.netlify.app
+
+- Network: Stellar Testnet
+- Production deployment uses the live Stellar integration, not the local demo/localStorage path.
+- The deployed experience is intended to interact with the live SureSend and SUSD Testnet contracts described below.
+
 ## Why Stellar
 
 Anchors aren't just generic on/off ramps — they can *be* the merchant.
@@ -85,44 +93,82 @@ npm install
 npm run dev
 ```
 
-The app ships with `VITE_DEMO_MODE=true` by default: the full sender →
-merchant → claim flow runs against `localStorage`, no wallet or deployed
-contract required. Set `VITE_DEMO_MODE=false` to switch to live mode
-against the deployed testnet contract — the full end-to-end flow (create
-lock → attest delivery → claim settlement) has been tested live on
-Stellar testnet. See `docs/DEPLOYMENT.md` for the environment variable
-reference.
+The app also supports a local wallet-free demo path with `VITE_DEMO_MODE=true` for development and walkthroughs. That mode is a convenience only; the production Netlify deployment uses `VITE_DEMO_MODE=false` so the UI interacts with the live Stellar Testnet contracts. The full end-to-end flow (create lock → attest delivery → claim settlement) is designed to work against the deployed Testnet contracts in production. See `docs/DEPLOYMENT.md` for the environment-variable reference.
 
-## Contract address
+### Loading states and error handling
 
-| Network | Contract ID |
-|---|---|
-| Testnet | `CDZP6FOHKYJEK6GCGMDBE5XJMDYLYODTTT7SH74LA3222NUHU27WJLYE` |
+The production frontend includes wallet connection states, transaction loading/pending states, SUSD balance checks, insufficient-balance handling, and user-facing Stellar/Soroban transaction error handling with retry guidance for failed actions.
+
+## Contract addresses
+
+| Contract | Address | Network |
+|---|---|---|
+| SureSend contract | `CDZP6FOHKYJEK6GCGMDBE5XJMDYLYODTTT7SH74LA3222NUHU27WJLYE` | Stellar Testnet |
+| SUSD token contract | `CBKOVGHJNANMNAHU3IVOFB64PS74QKSQ3KA6PATYDN6N5S7U64UDCXNT` | Stellar Testnet |
 
 ## Screenshots
 
-_Add screenshots here before submitting — see the checklist below for
-exactly what's needed._
+### Sender flow / Product UI
+<!-- TODO before submission: add docs/screenshots/sender-flow.png -->
 
-- [ ] `docs/screenshots/sender-flow.png` — product UI, sender flow
-- [ ] `docs/screenshots/mobile.png` — mobile responsive view
-- [ ] `docs/screenshots/merchant-inbox.png` — merchant confirm/claim view
-- [ ] `docs/screenshots/analytics.png` — analytics/monitoring setup (see `docs/ANALYTICS.md`)
+### Mobile responsive design
+<!-- TODO before submission: add docs/screenshots/mobile.png -->
+
+### Merchant inbox
+<!-- TODO before submission: add docs/screenshots/merchant-inbox.png -->
+
+### Production analytics / monitoring
+<!-- TODO before submission: add docs/screenshots/analytics.png -->
+
+### Pilot wallet interaction proof
+<!-- TODO before submission: add docs/screenshots/wallet-interactions-1.png -->
+<!-- TODO before submission: add docs/screenshots/wallet-interactions-2.png -->
 
 ## Demo video
 
-`<link to your recorded walkthrough — see docs/DEPLOYMENT.md #5 for the suggested script>`
+<!-- TODO before submission: add final Loom/demo video URL -->
 
-## User onboarding & feedback
+## User onboarding & pilot
 
-The pilot plan is one diaspora community, one real school, 10–20 real
-families — not broad signups. See
-[`docs/USER_ONBOARDING.md`](docs/USER_ONBOARDING.md) for the recruiting
-and onboarding script, and
-[`docs/FEEDBACK_TEMPLATE.md`](docs/FEEDBACK_TEMPLATE.md) for the table to
-fill in with real wallet-interaction proof and feedback once the pilot
-runs. The in-app **Pilot stats** tab aggregates feedback-widget
-submissions automatically.
+The pilot workflow is documented for active use. Each tester connects a
+unique Stellar Testnet wallet, enables SUSD, completes the sender flow,
+creates a purpose-locked payment, and submits feedback through the
+in-app feedback widget. The current workspace includes one captured
+feedback submission from the in-app feedback flow; the final pilot count
+and wallet-proof documentation should be completed before the final
+submission.
+
+### Pilot wallet interaction proof
+
+Proof for the submission should consist of distinct Stellar Testnet
+wallets successfully creating purpose-locked SUSD payments. The current
+project materials include the in-app feedback flow and the Pilot Stats
+experience; wallet-interaction screenshots should be added under the
+screenshot paths above as the pilot progresses. See
+[`docs/FEEDBACK_TEMPLATE.md`](docs/FEEDBACK_TEMPLATE.md) for the
+submission-ready tracking template.
+
+### Pilot feedback summary
+
+The current workspace includes one captured feedback response from the
+in-app feedback widget. Verified details:
+
+- 1 feedback response
+- average clarity rating: 4.0/5
+- role represented: Sender
+- recurring observation: "it works nice"
+
+Additional feedback and participant details should be added as the pilot
+continues. Feedback is collected through the in-app feedback widget and
+aggregated in the Pilot Stats view.
+
+## Analytics / monitoring
+
+The production deployment uses Netlify Web Analytics for production
+traffic monitoring. The app also emits analytics events for wallet
+connection, lock creation, delivery attestation, claim, and feedback
+submission. See [`docs/ANALYTICS.md`](docs/ANALYTICS.md) for the
+monitoring setup and event list.
 
 ## Known limitations
 
@@ -149,6 +195,22 @@ Full detail in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 - Frontend: manual click-through via demo mode is the fastest way to
   verify the full flow end to end; see `docs/DEPLOYMENT.md` for the
   suggested demo script.
+
+## Level 4 submission evidence
+
+| Requirement | Evidence |
+|---|---|
+| Production MVP | Production MVP overview and deployment guidance are documented in this README and [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md). |
+| Stellar Testnet contract | SureSend and SUSD Testnet contract addresses are documented above. |
+| Public GitHub repository | Public repository: https://github.com/N1CK99925/suresend |
+| 15+ meaningful commits | Repository history includes more than 15 meaningful commits across contract and frontend work. |
+| Production deployment | Live deployment: https://suresend.netlify.app |
+| Mobile responsive UI | Pending screenshot evidence for the mobile view. |
+| Analytics/monitoring | See [`docs/ANALYTICS.md`](docs/ANALYTICS.md) and the analytics section above. |
+| 10+ user onboarding | Pending — the pilot count still needs to be completed and documented. |
+| 10+ wallet interactions | Pending — wallet interaction proof and screenshots still need to be collected. |
+| User feedback | Partially documented; the current workspace includes one captured feedback response. |
+| Demo video | Pending — add final Loom/demo video URL. |
 
 ## License
 
