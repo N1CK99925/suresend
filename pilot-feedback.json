@@ -12,5 +12,12 @@
     "rating": 4,
     "comment": "Good enough, Requires UI refinements. \nAs someone who works with blockchian, it was intuitive enough. For general public it might be confusing to understand what \"enabling SUSD\" or Approving means. \nAlso all the buttons changes states if one of them is active, eg: if we are in process of Approving SUSD, UI shows Locking and Signing.. button active. And this feedback box is very tiny, I cannot edit my text now. :)",
     "received_at": "2026-07-30T16:35:20.234Z"
+  },
+  {
+    "address": "GBHOWK24M4W7D3WNMU3AGKWSYZPD4QAPEGXCEHPEF3NZBOSCEGHXFY75",
+    "role": "Sender",
+    "rating": 5,
+    "comment": "very immersive experience. would recommend to everyone. execution was smooth and easy to understand.",
+    "received_at": "2026-07-30T16:42:50.488Z"
   }
 ]
