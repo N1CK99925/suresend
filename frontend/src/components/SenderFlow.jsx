@@ -5,6 +5,7 @@ import {
   getLocksFor,
   trustSUSD,
   approveSUSD,
+  getSUSDBalance,
 } from "../lib/stellar.js";
 import { track, EVENTS } from "../lib/analytics.js";
 import { Spinner, ErrorBanner, EmptyState, StatusPill } from "./ui/Primitives.jsx";
@@ -29,6 +30,7 @@ export default function SenderFlow({ address }) {
   const [error, setError] = useState("");
   const [locks, setLocks] = useState([]);
   const [loadingLocks, setLoadingLocks] = useState(true);
+  const [susdBalance, setSusdBalance] = useState(null);
 
   useEffect(() => {
     if (!address) return;
@@ -36,6 +38,24 @@ export default function SenderFlow({ address }) {
     getLocksFor(address, "sender")
       .then(setLocks)
       .finally(() => setLoadingLocks(false));
+  }, [address, submitting]);
+
+  useEffect(() => {
+    if (!address) return;
+    let mounted = true;
+    setSusdBalance(null);
+    getSUSDBalance(address)
+      .then((b) => {
+        if (!mounted) return;
+        setSusdBalance(Number(b) / 10_000_000);
+      })
+      .catch(() => {
+        if (!mounted) return;
+        setSusdBalance(null);
+      });
+    return () => {
+      mounted = false;
+    };
   }, [address, submitting]);
 
   const filteredMerchants = merchants.filter((m) => m.category === category);
@@ -85,6 +105,22 @@ async function handleApproveSUSD() {
     setSubmitting(true);
     setError("");
     try {
+      // Check SUSD balance first to provide a clearer error
+      const numericAmount = Number(amount);
+      const stroops = BigInt(Math.round(numericAmount * 10_000_000));
+      const bal = await getSUSDBalance(address);
+
+      // Debug logging to help diagnose persistent host errors
+      console.debug("createLock: requested stroops=", String(stroops), "balance=", String(bal));
+
+      if (bal < stroops) {
+        const humanBal = Number(bal) / 10_000_000;
+        setError(
+          `Insufficient SUSD balance (${humanBal} SUSD). Please top up your wallet before locking funds.`
+        );
+        return;
+      }
+
       await createLock({
         sender: address,
         recipient: recipient || address,
@@ -97,7 +133,19 @@ async function handleApproveSUSD() {
       track(EVENTS.LOCK_CREATED, { category, timeoutDays });
       reset();
     } catch (err) {
-      setError(err?.message || "Couldn't create the lock. Please try again.");
+      // Friendly handling for the common token transfer host error
+      const msg = err?.message || err?.toString?.() || "Couldn't create the lock. Please try again.";
+      console.error("createLock failed:", msg, err);
+
+      if (typeof msg === "string" && msg.includes("resulting balance is not within the allowed range")) {
+        setError(
+          "Token transfer failed: your wallet balance or token constraints prevented the transfer. Verify you have enough SUSD and the asset trustline is established."
+        );
+      } else if (typeof msg === "string" && msg.includes("transaction failed")) {
+        setError("Transaction failed. Check wallet/network and try again.");
+      } else {
+        setError(msg);
+      }
     } finally {
       setSubmitting(false);
     }
@@ -287,6 +335,8 @@ async function handleApproveSUSD() {
               <dd className="font-medium">
                 {onTimeout === "RefundToSender" ? "Refund to me" : "Release to recipient"} after {timeoutDays} days
               </dd>
+              <dt className="text-ledger-mute">Your SUSD balance</dt>
+              <dd className="font-medium">{susdBalance === null ? "Checking…" : `${susdBalance} SUSD`}</dd>
             </dl>
             <button
               onClick={handleSubmit}

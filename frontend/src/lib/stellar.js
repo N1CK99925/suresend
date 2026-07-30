@@ -653,6 +653,44 @@ export async function createLock({
   return result;
 }
 
+export async function getSUSDBalance(address) {
+  if (DEMO_MODE) return 0n;
+
+  requireLiveConfig();
+
+  if (!address) {
+    throw new Error("Connect your Stellar wallet first.");
+  }
+
+  try {
+    const susd = new StellarSdk.Contract(SUSD_CONTRACT_ID);
+
+    const operation = susd.call(
+      "balance",
+      scAddress(address)
+    );
+
+    const transaction = await buildTransaction(address, operation);
+
+    const simulation = await server.simulateTransaction(transaction);
+
+    if (StellarSdk.rpc.Api.isSimulationError(simulation)) {
+      console.error("SUSD balance simulation failed:", simulation);
+      throw new Error("Unable to read SUSD balance.");
+    }
+
+    if (!simulation.result?.retval) return 0n;
+
+    const native = StellarSdk.scValToNative(simulation.result.retval);
+
+    // Ensure BigInt return for consistency (i128 from token contract)
+    return BigInt(native ?? 0);
+  } catch (err) {
+    console.error("getSUSDBalance failed:", err);
+    throw new Error(err?.message || "Unable to read SUSD balance.");
+  }
+}
+
 export async function attestDelivery(lockId) {
   if (DEMO_MODE) {
     const locks = readLocks();
