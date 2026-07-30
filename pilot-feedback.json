@@ -40,5 +40,12 @@
     "rating": 5,
     "comment": "CLEARLY EXPLAINED. EASY TO NAVIGATE",
     "received_at": "2026-07-30T18:19:03.880Z"
+  },
+  {
+    "address": "GAMR7N3CFYMVAJLU3NMBSXNUYL3OSJC5WM7CPHG3ENCF4ZR7IL6N23WF",
+    "role": "Sender",
+    "rating": 5,
+    "comment": "the steps for testing were very clearly explained. Although im not sure what i was testing so i was confused with what SUSD and all meant wasnt quite sure what i was doing there. The ui is pretty clean and straightforward. Everything is clear and u dont have any trouble finding anything. Could be made better but i dont mind it for its use. The application otherwise worked pretty smoothly and i didmt have any issues",
+    "received_at": "2026-07-30T18:38:01.274Z"
   }
 ]
