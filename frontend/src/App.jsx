@@ -88,6 +88,25 @@ function PilotStats() {
       <p className="text-sm text-ledger-mute mb-6">
         Aggregated from the in-app feedback widget. Export this alongside your submission's user feedback summary.
       </p>
+      <div className="mb-4">
+        <button
+          onClick={() => {
+            const data = JSON.stringify(feedback, null, 2);
+            const blob = new Blob([data], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `suresend-feedback-${new Date().toISOString()}.json`;
+            document.body.appendChild(a);
+            a.click();
+            a.remove();
+            URL.revokeObjectURL(url);
+          }}
+          className="rounded-stamp border border-ledger-line px-3 py-2 text-sm mr-2"
+        >
+          Export feedback
+        </button>
+      </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
         <Stat label="Responses" value={feedback.length} />
         <Stat label="Avg. clarity rating" value={avg} />
