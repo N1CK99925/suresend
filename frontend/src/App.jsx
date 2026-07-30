@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ConnectWallet from "./components/ConnectWallet.jsx";
 import SenderFlow from "./components/SenderFlow.jsx";
 import RecipientView from "./components/RecipientView.jsx";
@@ -79,7 +79,30 @@ export default function App() {
 }
 
 function PilotStats() {
-  const feedback = getAllFeedback();
+  const [feedback, setFeedback] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    getAllFeedback()
+      .then((data) => {
+        if (!mounted) return;
+        setFeedback(data || []);
+      })
+      .catch(() => {
+        if (!mounted) return;
+        setFeedback([]);
+      })
+      .finally(() => {
+        if (!mounted) return;
+        setLoading(false);
+      });
+    return () => {
+      mounted = false;
+    };
+  }, []);
+
   const avg = feedback.length ? (feedback.reduce((s, f) => s + f.rating, 0) / feedback.length).toFixed(1) : "—";
 
   return (
@@ -105,6 +128,15 @@ function PilotStats() {
           className="rounded-stamp border border-ledger-line px-3 py-2 text-sm mr-2"
         >
           Export feedback
+        </button>
+        <button
+          onClick={() => {
+            navigator.clipboard && navigator.clipboard.writeText(JSON.stringify(feedback, null, 2));
+            alert('Feedback copied to clipboard');
+          }}
+          className="rounded-stamp border border-ledger-line px-3 py-2 text-sm"
+        >
+          Copy to clipboard
         </button>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">

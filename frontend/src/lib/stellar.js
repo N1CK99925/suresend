@@ -834,26 +834,44 @@ export async function getLocksFor(address, role) {
 // Feedback
 // ---------------------------------------------------------------------
 
-export function submitFeedback(entry) {
-  const all = JSON.parse(
-    localStorage.getItem(FEEDBACK_KEY) || "[]"
-  );
+export async function submitFeedback(entry) {
+  // Demo mode: keep local storage behaviour
+  if (DEMO_MODE) {
+    const all = JSON.parse(localStorage.getItem(FEEDBACK_KEY) || "[]");
+    all.push({ ...entry, at: Date.now() });
+    localStorage.setItem(FEEDBACK_KEY, JSON.stringify(all));
+    return;
+  }
 
-  all.push({
-    ...entry,
-    at: Date.now(),
-  });
-
-  localStorage.setItem(
-    FEEDBACK_KEY,
-    JSON.stringify(all)
-  );
+  // Live mode: POST to Netlify function which stores to the repo via GitHub API.
+  try {
+    await fetch('/.netlify/functions/submit-feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(entry),
+    });
+  } catch (err) {
+    console.error('submitFeedback failed, falling back to local storage', err);
+    const all = JSON.parse(localStorage.getItem(FEEDBACK_KEY) || "[]");
+    all.push({ ...entry, at: Date.now() });
+    localStorage.setItem(FEEDBACK_KEY, JSON.stringify(all));
+  }
 }
 
-export function getAllFeedback() {
-  return JSON.parse(
-    localStorage.getItem(FEEDBACK_KEY) || "[]"
-  );
+export async function getAllFeedback() {
+  if (DEMO_MODE) {
+    return JSON.parse(localStorage.getItem(FEEDBACK_KEY) || "[]");
+  }
+
+  try {
+    const res = await fetch('/.netlify/functions/get-feedback');
+    if (!res.ok) throw new Error('Could not fetch feedback');
+    const data = await res.json();
+    return data;
+  } catch (err) {
+    console.error('getAllFeedback failed, falling back to local storage', err);
+    return JSON.parse(localStorage.getItem(FEEDBACK_KEY) || "[]");
+  }
 }
 
 // Re-export SDK for debugging/scripts.
