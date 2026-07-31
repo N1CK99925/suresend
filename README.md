@@ -146,7 +146,9 @@ The production frontend includes:
 
 ## Demo video
 
-<!-- TODO: add final Loom/demo video URL -->
+[Watch the SureSend live demo on Loom](https://www.loom.com/share/4f89f4c00d4a4311bafda4cb93ebb013)
+
+The demo shows the live Stellar Testnet SureSend purpose-locked payment workflow.
 
 ## User onboarding & pilot
 
@@ -243,7 +245,7 @@ Full detail in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 | 10+ real user onboarding | Complete | [User onboarding & pilot](#user-onboarding--pilot) — 11 pilot participants; `docs/screenshots/pilot-stats.png` |
 | 10+ wallet interactions | Complete | [Pilot wallet interaction proof](#pilot-wallet-interaction-proof) — `docs/screenshots/wallet-proof-1.png`, `docs/screenshots/wallet-proof-2.png` |
 | Basic user feedback | Complete — 11 responses collected; see [docs/FEEDBACK_TEMPLATE.md](docs/FEEDBACK_TEMPLATE.md) and the Pilot Stats evidence above |
-| Demo video | Pending | [Demo video](#demo-video) — Loom/demo video URL to be added |
+| Demo video | Complete — [Watch the SureSend live demo on Loom](https://www.loom.com/share/4f89f4c00d4a4311bafda4cb93ebb013) |
 
 ## License
 
