@@ -37,9 +37,13 @@ For each participant, capture:
 - Their feedback widget submission (aggregated automatically under
   the "Pilot stats" tab in the app)
 
-Track these in a simple table (see `docs/FEEDBACK_TEMPLATE.md` for a
-ready-made one) — that table plus screenshots is what satisfies
-"Proof of 10+ user wallet interactions."
+For the completed pilot, this evidence has already been collected and
+committed: the 11 feedback responses are recorded in
+`pilot-feedback.json` and aggregated in the "Pilot stats" tab, the
+per-participant table lives in `docs/FEEDBACK_TEMPLATE.md`, and the
+wallet-interaction screenshots (`docs/screenshots/wallet-proof-1.png`
+and `docs/screenshots/wallet-proof-2.png`) are embedded in the README,
+where "10+ user wallet interactions" is marked Complete.
 
 ## What this scaffold cannot do for you
 
