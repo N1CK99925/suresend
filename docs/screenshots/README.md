@@ -8,8 +8,7 @@ Level 4 review:
   or a real phone)
 - `merchant-inbox.png` — the Merchant inbox tab showing a lock ready to
   attest/claim
-- `analytics.png` — either the Plausible dashboard, or the browser
-  console/localStorage showing `suresend_events_v1`-style events if
-  running in dev mode without Plausible configured
+- `analytics.png` — the production Netlify Web Analytics dashboard
+  showing traffic (pageviews, unique visitors, bandwidth/traffic trends)
 
 Referenced from the root `README.md`'s checklist.
