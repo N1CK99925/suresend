@@ -117,20 +117,32 @@ The production frontend includes:
 ## Screenshots
 
 ### Product UI / Sender flow
-<!-- TODO: add docs/screenshots/sender-flow.png -->
+
+![SureSend sender flow — category step](docs/screenshots/product-ui-1.png)
+
+![SureSend sender flow — review and sign step](docs/screenshots/product-ui-2.png)
 
 ### Mobile responsive design
-<!-- TODO: add docs/screenshots/mobile.png -->
 
-### Merchant inbox
-<!-- TODO: add docs/screenshots/merchant-inbox.png -->
+![SureSend mobile UI](docs/screenshots/mobile-ui.png)
+
+### Merchant inbox / Merchant flow
+
+![SureSend merchant inbox](docs/screenshots/merchant-inbox.png)
 
 ### Analytics / monitoring
-<!-- TODO: add docs/screenshots/analytics.png -->
+
+![SureSend analytics](docs/screenshots/analytics.png)
+
+### Pilot stats / User feedback
+
+![SureSend pilot stats](docs/screenshots/pilot-stats.png)
 
 ### 10+ wallet interactions
-<!-- TODO: add docs/screenshots/wallet-interactions-1.png -->
-<!-- TODO: add docs/screenshots/wallet-interactions-2.png -->
+
+![SureSend wallet interaction proof 1](docs/screenshots/wallet-proof-1.png)
+
+![SureSend wallet interaction proof 2](docs/screenshots/wallet-proof-2.png)
 
 ## Demo video
 
@@ -156,11 +168,9 @@ their own wallet address; the responses are recorded in
 
 The Level 4 requirement is proof of 10+ distinct wallets successfully
 interacting with the app. The 11 feedback responses come from 11 distinct
-Stellar Testnet wallet addresses, but wallet-interaction screenshots or
-per-user transaction hashes have not been added to the repository yet, so
-this requirement stays **Pending**. See
-[`docs/FEEDBACK_TEMPLATE.md`](docs/FEEDBACK_TEMPLATE.md) for the
-per-user proof tracker and the screenshot slots above.
+Stellar Testnet wallet addresses, and wallet-interaction screenshots are
+embedded in the [Screenshots](#screenshots) section above
+(`wallet-proof-1.png` and `wallet-proof-2.png`).
 
 ### Pilot feedback summary
 
@@ -168,8 +178,8 @@ SureSend collected 11 pilot feedback responses from distinct Stellar Testnet wal
 
 **Pilot results**
 - Feedback responses: 11
-- Average rating: 4.27/5
-- Roles represented: 10 Senders, 1 Recipient
+- Average clarity rating: 4.3/5 (as shown in the in-app Pilot Stats view)
+- Roles represented: 2 — 10 Senders, 1 Recipient
 - Rating range: 3–5/5
 
 **Key feedback themes**
@@ -226,11 +236,11 @@ Full detail in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 | Public GitHub repository | Complete | https://github.com/N1CK99925/suresend |
 | 15+ meaningful commits | Complete | [Commit history](https://github.com/N1CK99925/suresend/commits/main) |
 | Production deployment | Complete | https://suresend.netlify.app |
-| Mobile responsive UI | Pending | Mobile screenshot not yet added — see [Screenshots](#screenshots) |
-| Analytics/monitoring | Complete | [`docs/ANALYTICS.md`](docs/ANALYTICS.md) and the [analytics section](#analytics--monitoring) |
-| 10+ real user onboarding | Complete | [User onboarding & pilot](#user-onboarding--pilot) — 11 pilot participants |
-| 10+ wallet interactions | Pending | [Pilot wallet interaction proof](#pilot-wallet-interaction-proof) — screenshot evidence to be added |
-| Basic user feedback | Complete | [Pilot feedback summary](#pilot-feedback-summary) — 11 responses, 4.27/5 average |
+| Mobile responsive UI | Complete | [Mobile responsive design](#mobile-responsive-design) — `docs/screenshots/mobile-ui.png` |
+| Analytics/monitoring | Complete | [`docs/ANALYTICS.md`](docs/ANALYTICS.md), the [analytics section](#analytics--monitoring), and `docs/screenshots/analytics.png` |
+| 10+ real user onboarding | Complete | [User onboarding & pilot](#user-onboarding--pilot) — 11 pilot participants; `docs/screenshots/pilot-stats.png` |
+| 10+ wallet interactions | Complete | [Pilot wallet interaction proof](#pilot-wallet-interaction-proof) — `docs/screenshots/wallet-proof-1.png`, `docs/screenshots/wallet-proof-2.png` |
+| Basic user feedback | Complete | [Pilot feedback summary](#pilot-feedback-summary) — 11 responses, 4.3/5 average; `docs/screenshots/pilot-stats.png` |
 | Demo video | Pending | [Demo video](#demo-video) — Loom/demo video URL to be added |
 
 ## License
