@@ -54,5 +54,12 @@
     "rating": 4,
     "comment": "no not really",
     "received_at": "2026-07-31T05:37:28.119Z"
+  },
+  {
+    "address": "GCN7YAJVV6H6ACCZQM7IZWJKIFYVASCCIYFXUZUM6XE3RA2ZDKJSMJST",
+    "role": "Sender",
+    "rating": 5,
+    "comment": "The wallet approval steps were a little confusing at first. eveything else is good ",
+    "received_at": "2026-07-31T08:50:28.602Z"
   }
 ]
