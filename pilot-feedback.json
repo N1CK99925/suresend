@@ -61,5 +61,12 @@
     "rating": 5,
     "comment": "The wallet approval steps were a little confusing at first. eveything else is good ",
     "received_at": "2026-07-31T08:50:28.602Z"
+  },
+  {
+    "address": "GCAJSVDXVRAM2LFARQ724BSW5MMQZKRIL5HYFRNEFGGEHPWASY2ADDHZ",
+    "role": "Sender",
+    "rating": 4,
+    "comment": "Simple interface and the school fee locking process was clear.",
+    "received_at": "2026-07-31T09:11:59.689Z"
   }
 ]
