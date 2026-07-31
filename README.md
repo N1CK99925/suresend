@@ -193,6 +193,8 @@ Overall, the pilot validated that the core purpose-locked payment flow is usable
 
 Feedback was collected through the in-app feedback widget and aggregated through the Pilot Stats workflow.
 
+For the detailed pilot feedback record and per-user evidence, see [docs/FEEDBACK_TEMPLATE.md](docs/FEEDBACK_TEMPLATE.md).
+
 ## Analytics / monitoring
 
 The production deployment uses Netlify Web Analytics for production
@@ -240,7 +242,7 @@ Full detail in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md).
 | Analytics/monitoring | Complete | [`docs/ANALYTICS.md`](docs/ANALYTICS.md), the [analytics section](#analytics--monitoring), and `docs/screenshots/analytics.png` |
 | 10+ real user onboarding | Complete | [User onboarding & pilot](#user-onboarding--pilot) — 11 pilot participants; `docs/screenshots/pilot-stats.png` |
 | 10+ wallet interactions | Complete | [Pilot wallet interaction proof](#pilot-wallet-interaction-proof) — `docs/screenshots/wallet-proof-1.png`, `docs/screenshots/wallet-proof-2.png` |
-| Basic user feedback | Complete | [Pilot feedback summary](#pilot-feedback-summary) — 11 responses, 4.3/5 average; `docs/screenshots/pilot-stats.png` |
+| Basic user feedback | Complete — 11 responses collected; see [docs/FEEDBACK_TEMPLATE.md](docs/FEEDBACK_TEMPLATE.md) and the Pilot Stats evidence above |
 | Demo video | Pending | [Demo video](#demo-video) — Loom/demo video URL to be added |
 
 ## License
