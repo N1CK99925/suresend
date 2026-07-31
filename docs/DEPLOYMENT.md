@@ -47,18 +47,22 @@ contract/hosting pieces come together.
 
 ## 3. Going live
 
-1. Set `VITE_SURESEND_CONTRACT_ID` in `.env` to the deployed contract
-   ID from step 1.
-2. Implement the live-mode branch in `frontend/src/lib/stellar.js`
-   (`createLock`, `attestDelivery`, `claimLock`, `getLocksFor`) using
-   `@stellar/stellar-sdk`'s `Contract` + `TransactionBuilder`, signed
-   via the already-wired `stellar-wallets-kit` connection. The demo
-   functions define the exact shape (`Lock` fields, status strings)
-   the live calls need to return so the UI doesn't have to change.
-3. Set `VITE_DEMO_MODE=false`.
-4. `npm run build` and deploy `frontend/dist` to your static host of
-   choice (Vercel, Netlify, Cloudflare Pages, or an S3 bucket all
-   work fine for a Vite SPA — enable SPA fallback routing).
+The live-mode branch in `frontend/src/lib/stellar.js` is already
+implemented — `createLock`, `attestDelivery`, `claimLock`,
+`getLocksFor`, `trustSUSD`, `approveSUSD`, and `getSUSDBalance` all talk
+to the deployed Soroban contracts through `@stellar/stellar-sdk`
+(`Contract` + `TransactionBuilder`), signed via the wired-up
+`stellar-wallets-kit` connection. To point a build at production:
+
+1. Set `VITE_SURESEND_CONTRACT_ID` and `VITE_SUSD_CONTRACT_ID` in
+   `frontend/.env` to the deployed contract IDs (SureSend + SUSD).
+2. Set `VITE_DEMO_MODE=false`.
+3. `npm run build`.
+4. Deploy `frontend/dist` to Netlify (see `netlify.toml` — it publishes
+   `frontend/dist` and serves `netlify/functions` for the feedback
+   endpoints). Configure the `GITHUB_TOKEN` and `GITHUB_REPO`
+   environment variables for the feedback functions in the Netlify
+   dashboard. Any static host with SPA fallback routing works too.
 
 ## 4. Analytics
 

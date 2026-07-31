@@ -75,8 +75,9 @@ claimable-balance *mental model* the ecosystem already understands.
 - **`get_locks_for` scans linearly** over all locks. Fine for a pilot
   with a few hundred locks; would need an off-chain indexer
   (e.g. via Horizon/RPC event ingestion) at real scale.
-- **The frontend ships in "demo mode" by default** (see
-  `docs/DEPLOYMENT.md`) so the full flow can be clicked through and
-  screenshotted before a testnet contract is live. Flip
-  `VITE_DEMO_MODE=false` once the live-mode Soroban invoke calls are
-  wired up in `frontend/src/lib/stellar.js`.
+- **Demo mode is a local-development convenience only.** The live-mode
+  Soroban calls (`createLock`, `attestDelivery`, `claimLock`,
+  `getLocksFor`, `trustSUSD`, `approveSUSD`, `getSUSDBalance`) are
+  wired up in `frontend/src/lib/stellar.js`, and the production Netlify
+  deployment ships with `VITE_DEMO_MODE=false` against the deployed
+  Testnet contracts.
