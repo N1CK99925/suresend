@@ -39,7 +39,7 @@ fn setup<'a>() -> Setup<'a> {
     let recipient = Address::generate(&env);
     let merchant = Address::generate(&env);
 
-    let contract_id = env.register(SureSendContract, ());
+    let contract_id = env.register_contract(None, SureSendContract);
     let client = SureSendContractClient::new(&env, &contract_id);
     client.initialize(&admin);
 
